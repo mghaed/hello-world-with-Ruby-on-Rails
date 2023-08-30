@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en" class="rrf-mode">
+  <head>
+    <title><%= @title %></title>
+
+    <%# These dynamic tags cannot be cached, so include directly instead of in `head` partial. %>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag rescue nil %>
+
+    <%= render partial: "rest_framework/head", cached: true %>
+
+    <%= yield :head %>
+  </head>
+
+  <body>
+    <header>
+      <%= render partial: "rest_framework/header" %>
+    </header>
+    <div class="container py-3">
+      <%= render partial: "rest_framework/breadcrumbs" unless @hide_breadcrumbs %>
+      <%= render partial: "rest_framework/heading" unless @hide_heading %>
+      <%= render partial: "rest_framework/request_metadata" unless @hide_request_metadata %>
+      <%= yield %>
+      <%= render partial: "rest_framework/payloads" if @json_payload.present? || @xml_payload.present? %>
+      <%= render partial: "rest_framework/routes_and_forms" if @route_groups.present? %>
+    </div>
+  </body>
+</html>
